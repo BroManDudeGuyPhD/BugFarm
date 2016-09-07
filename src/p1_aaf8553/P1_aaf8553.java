@@ -12,12 +12,16 @@
 
 package p1_aaf8553;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
 
 public class P1_aaf8553 {
-    static bugFarm bugfarm = new bugFarm();
+    
 
 
     public static void main(String[] args) { 
@@ -26,6 +30,7 @@ public class P1_aaf8553 {
 //        • the upper bounds of the range (99 or less, but greater than zero).
 //        • the number of times the alive bugs will move (and potentially fight and mate).
 //        • the name of the report file.
+
         Scanner sc = new Scanner(System.in);
         
         System.out.print("Number of bugs: ");
@@ -47,9 +52,9 @@ public class P1_aaf8553 {
         Scanner sc2 = new Scanner(System.in);
         String reportFile= sc2.nextLine();
         
-        bugfarm(bugs, farmSize, movements);
-        
-        
+        bugFarm bugfarm = new bugFarm(bugs,farmSize,movements);
+        bugfarm.initializeBugFarm(bugs, farmSize, movements, reportFile);
+
         
     
     }

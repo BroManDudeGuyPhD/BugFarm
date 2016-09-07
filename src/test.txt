@@ -1,0 +1,15 @@
+Initial: 
+Bugs: 50
+Male Bugs: 22
+Female Bugs: 28
+
+
+End Results: 
+Alive Bugs:50
+Dead Bugs: 0
+Male Bugs: 22
+Alive Male Bugs: 28
+Dead Male Bugs: 0
+Female Bugs: 28
+Alive Female Bugs: 22
+Dead Female Bugs: 0

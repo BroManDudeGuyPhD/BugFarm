@@ -1,6 +1,5 @@
 package p1_aaf8553;
 
-import java.util.Random;
 
 
 public class bug implements Comparable<bug>{
@@ -11,9 +10,6 @@ public class bug implements Comparable<bug>{
     private int y;
     private int z;
     
-    public bug(){
-        
-    }
     
     public bug(int gender, int x, int y){
         this.gender = gender;
@@ -27,12 +23,24 @@ public class bug implements Comparable<bug>{
         return this.alive;
     }
     
+    public void setDed(){
+       alive = false;
+    }
+    
     public int getX(){
         return x;
     }
     
+    public void setX(int x){
+        this.x = x;
+    }
+    
     public int getY(){
         return y;
+    }
+    
+    public void setY(int y){
+        this.y = y;
     }
     
     public String getGender(){
