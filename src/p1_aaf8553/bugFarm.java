@@ -7,14 +7,17 @@ import java.util.Random;
 public class bugFarm extends bug{
     
     int initialBugs = 0;
+    
     int livingMales = 0;
     int initialMales = 0;
     int deadMales = 0;
+    int maleBugs = 0;
     
     int livingFemales = 0;
     int initialFemales = 0;
     int deadFemales = 0;
-
+    int femaleBugs = 0;
+    
     public bugFarm(int gender, int x, int y) {
         super(gender, x, y);
     }
@@ -35,11 +38,13 @@ public class bugFarm extends bug{
             
             if(bugsList.get(i).getGender().equals("Female")){
                 livingFemales ++; 
-                initialMales++;
-            }
-            else{
-                livingMales++;
                 initialFemales++;
+                maleBugs++;
+            }
+            if(bugsList.get(i).getGender().equals("Male")){
+                livingMales++;
+                initialMales++;
+                femaleBugs++;
             }
 
         }
@@ -48,57 +53,145 @@ public class bugFarm extends bug{
         
         //Simulation
         for (int a = 0; a < movements; a++) {
-            
-            
             int dummy = bugsList.size();
+            
+            //movement
+            for(int i = 0; i < dummy; i++ ){
+                if(bugsList.get(i).isAlive() == true){
+                    Random rand = new Random();
+                    
+                    int initX = bugsList.get(i).getX();
+                    int initY = bugsList.get(i).getY();
+                    boolean xSizeWarning = false;
+                    boolean ySizeWarning = false;
+                    
+                    if(initX + 1 > farmSize || initX < 0){
+                        xSizeWarning = true;
+                    }
+                    
+                    if(initY + 1 > farmSize || initY < 0){
+                        ySizeWarning = true;
+                    }
+                    
+                    
+                    int direction = rand.nextInt((7 - 0) + 1);
+                    
+                    if(direction == 0){
+                        if(ySizeWarning == false)
+                            bugsList.get(i).setY(bugsList.get(i).getY()+1);
+                    }
+                    
+                    if(direction == 1){
+                        if(xSizeWarning == false)
+                            bugsList.get(i).setX(bugsList.get(i).getX()+1);
+                        
+                        if(ySizeWarning == false)
+                            bugsList.get(i).setY(bugsList.get(i).getY()+1);
+                    }
+                    
+                    if(direction == 2){
+                        if(xSizeWarning == false)
+                            bugsList.get(i).setX(bugsList.get(i).getX()+1);
+                    }
+                    
+                    if(direction == 3){
+                        if(xSizeWarning == false)
+                            bugsList.get(i).setX(bugsList.get(i).getX()+1);
+                        
+                        if(ySizeWarning == false)
+                            bugsList.get(i).setY(bugsList.get(i).getY()-1);
+                    }
+                    
+                    if(direction == 4){
+                        if(ySizeWarning == false)
+                            bugsList.get(i).setY(bugsList.get(i).getY()-1);
+                    }
+                    
+                    if(direction == 5){
+                        if(xSizeWarning == false)
+                            bugsList.get(i).setX(bugsList.get(i).getX()-1);
+                       
+                        if(ySizeWarning == false)
+                            bugsList.get(i).setY(bugsList.get(i).getY()-1);
+                    }
+                    
+                    if(direction == 6){
+                        if(xSizeWarning == false)
+                            bugsList.get(i).setX(bugsList.get(i).getX()-1);
+                    }
+                    
+                    if(direction == 7){
+                        if(xSizeWarning == false)
+                            bugsList.get(i).setX(bugsList.get(i).getX()-1);
+                        
+                        if(ySizeWarning == false)
+                            bugsList.get(i).setY(bugsList.get(i).getY()+1);
+                    }
+                    
+                    
+                    
+                }
+            }
+            
+            
             for (int b = 0; b < dummy; b++) {
                 for (int c = b + 1; c < dummy; c++) {
-                    if (bugsList.get(b).compareTo(bugsList.get(c)) == 0) {
-                        
-                        //Checks if mating is neccessary
-                        if (!bugsList.get(b).getGender().equals(bugsList.get(c).getGender())) {
+                    if (bugsList.get(b).isAlive() == true && bugsList.get(c).isAlive() == true) {
+                        if (bugsList.get(b).compareTo(bugsList.get(c)) == 0) {
+
+                            //Checks if mating is neccessary
+                            if (!bugsList.get(b).getGender().equals(bugsList.get(c).getGender())) {
+
+                                //Bugs get it on
+                                Random rand = new Random();
+                                int gender = rand.nextInt((9 - 0) + 1);
+                                int x = rand.nextInt((farmSize - 0) + 1);
+                                int y = rand.nextInt((farmSize - 0) + 1);
+
+                                bugsList.add(new bug(gender, x, y));
+
+                                if (gender >= 5) {
+                                    livingFemales++;
+                                    femaleBugs++;
+                                }
+
+                                if (gender < 5) {
+                                    livingMales++;
+                                    maleBugs++;
+                                }
+                            } 
                             
-                            //Bugs get it on
-                            Random rand = new Random();
-                            int gender = rand.nextInt((9 - 0) + 1);
-                            int x = rand.nextInt((farmSize - 1) + 1) + 1;
-                            int y = rand.nextInt((farmSize - 1) + 1) + 1;
+                            else { //Fight to the ded
 
-                            bugsList.add(new bug(gender, x, y));
-                            
-                            if (gender >= 5) 
-                                livingFemales++;
+                                Random rand = new Random();
+                                int victor = rand.nextInt((9 - 0) + 1);
 
-                            if (gender < 5) 
-                                livingMales++;
-                        }
-                        
-                        else { //Fight to the ded
+                                if (victor >= 5) {
+                                    bugsList.get(b).setDed();
+                                    if (bugsList.get(b).getGender().equals("Male")) {
+                                        deadMales++;
+                                        livingMales--;
+                                    }
 
-                            Random rand = new Random();
-                            int victor = rand.nextInt((9 - 0) + 1);
+                                    if (bugsList.get(b).getGender().equals("Female")) {
+                                        deadFemales++;
+                                        livingFemales--;
+                                    }
 
-                            if (victor > 5) {
-                                bugsList.get(b).setDed();
-                                if(bugsList.get(b).getGender().equals("Male")){
-                                    deadMales++; livingMales--;
                                 }
-                                
-                                if(bugsList.get(b).getGender().equals("Female")){
-                                    deadFemales++; livingFemales--;
-                                }
-                                
-                            }
 
-                            if (victor <= 5) {
-                                bugsList.get(c).setDed();
-                                
-                                if(bugsList.get(c).getGender().equals("Male")){
-                                    deadMales++; livingMales--;
-                                }
-                                
-                                if(bugsList.get(c).getGender().equals("Female")){
-                                    deadFemales++; livingFemales--;
+                                if (victor < 5) {
+                                    bugsList.get(c).setDed();
+
+                                    if (bugsList.get(c).getGender().equals("Male")) {
+                                        deadMales++;
+                                        livingMales--;
+                                    }
+
+                                    if (bugsList.get(c).getGender().equals("Female")) {
+                                        deadFemales++;
+                                        livingFemales--;
+                                    }
                                 }
                             }
                         }
@@ -108,6 +201,7 @@ public class bugFarm extends bug{
             }
         }
 
+        
 //        for(int i=0; i<array1.size(); i++){
 //          for(int j=i + 1; j<array1.size(); j++){
 //              if(arr[i] != arr[j]){
@@ -136,18 +230,20 @@ public class bugFarm extends bug{
             printer.println("Bugs: "+ initialBugs);
             printer.println("Male Bugs: "+initialMales);
             printer.println("Female Bugs: "+initialFemales);
-            printer.println("\n\nEnd Results: ");
+            printer.println("------------");
+            printer.println("End Results: ");
             printer.println("Alive Bugs:"+(livingFemales+livingMales));
             printer.println("Dead Bugs: "+(deadMales+deadFemales));
-            printer.println("Male Bugs: "+initialMales);
+            printer.println("Male Bugs: "+maleBugs);
             printer.println("Alive Male Bugs: "+livingMales);
             printer.println("Dead Male Bugs: "+deadMales);
-            printer.println("Female Bugs: "+initialFemales);
+            printer.println("------------");
+            printer.println("Female Bugs: "+femaleBugs);
             printer.println("Alive Female Bugs: "+livingFemales);
             printer.println("Dead Female Bugs: "+deadFemales);
             printer.close();
-        }//end if
-    }//end EndBugFarm()
+        }
+    }
     
 }
 
