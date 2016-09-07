@@ -20,7 +20,7 @@ public class P1_aaf8553 {
     static bugFarm bugfarm = new bugFarm();
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         
 //        • the number of bugs initially in the bug farm.
 //        • the upper bounds of the range (99 or less, but greater than zero).
